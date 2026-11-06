@@ -83,6 +83,19 @@ Both engineered rules successfully triggered critical alerts upon payload execut
 ![Triggered SIEM Alerts](<Screenshots/Screenshot From 2026-11-04 21-33-14.png>)
 *Splunk Triggered Alerts dashboard confirming critical detections for both simulated attacks.*
 
+## MITRE ATT&CK Mapping
+
+| Phase | Tactic | Technique | ID | Simulated With | Detected By | Log Source |
+|---|---|---|---|---|---|---|
+| 1. Credential brute force | Credential Access | Brute Force: Password Guessing | [T1110.001](https://attack.mitre.org/techniques/T1110/001/) | Hydra (SMB2, Administrator account) | **Alert 1:** Excessive Authentication Failures | Windows Security, Event ID 4625 (Logon Type 3) |
+| 2. Payload execution | Execution | User Execution: Malicious File | [T1204.002](https://attack.mitre.org/techniques/T1204/002/) | Execution of `invoice_update.exe` on the Windows VM | **Alert 2:** Suspicious Outbound Connection | Sysmon, Event ID 1 (process creation) |
+| 2. C2 channel | Command and Control | Non-Application Layer Protocol | [T1095](https://attack.mitre.org/techniques/T1095/) | Metasploit reverse TCP (`multi/handler`) | **Alert 2:** Suspicious Outbound Connection | Sysmon, Event ID 3 (network connection) |
+| 2. C2 channel | Command and Control | Non-Standard Port | [T1571](https://attack.mitre.org/techniques/T1571/) | Callback to Kali listener on port 4444 | **Alert 2:** Suspicious Outbound Connection | Sysmon, Event ID 3 (destination port) |
+
+### Detection Coverage
+
+- **Covered:** T1110.001, T1204.002, T1095, T1571
+
 ---
 
 ## 5. Conclusion & Skills Demonstrated
